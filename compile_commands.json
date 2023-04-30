@@ -1,0 +1,104 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Isrc/include",
+      "-c",
+      "-o",
+      "obj/attack.o",
+      "src/attack.cpp"
+    ],
+    "directory": "/home/michabay/Documents/ceig",
+    "file": "/home/michabay/Documents/ceig/src/attack.cpp",
+    "output": "/home/michabay/Documents/ceig/obj/attack.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Isrc/include",
+      "-c",
+      "-o",
+      "obj/bitboard.o",
+      "src/bitboard.cpp"
+    ],
+    "directory": "/home/michabay/Documents/ceig",
+    "file": "/home/michabay/Documents/ceig/src/bitboard.cpp",
+    "output": "/home/michabay/Documents/ceig/obj/bitboard.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Isrc/include",
+      "-c",
+      "-o",
+      "obj/board.o",
+      "src/board.cpp"
+    ],
+    "directory": "/home/michabay/Documents/ceig",
+    "file": "/home/michabay/Documents/ceig/src/board.cpp",
+    "output": "/home/michabay/Documents/ceig/obj/board.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Isrc/include",
+      "-c",
+      "-o",
+      "obj/magics.o",
+      "src/magics.cpp"
+    ],
+    "directory": "/home/michabay/Documents/ceig",
+    "file": "/home/michabay/Documents/ceig/src/magics.cpp",
+    "output": "/home/michabay/Documents/ceig/obj/magics.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Isrc/include",
+      "-c",
+      "-o",
+      "obj/main.o",
+      "src/main.cpp"
+    ],
+    "directory": "/home/michabay/Documents/ceig",
+    "file": "/home/michabay/Documents/ceig/src/main.cpp",
+    "output": "/home/michabay/Documents/ceig/obj/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Isrc/include",
+      "-c",
+      "-o",
+      "obj/perft.o",
+      "src/perft.cpp"
+    ],
+    "directory": "/home/michabay/Documents/ceig",
+    "file": "/home/michabay/Documents/ceig/src/perft.cpp",
+    "output": "/home/michabay/Documents/ceig/obj/perft.o"
+  }
+]
