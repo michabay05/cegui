@@ -9,7 +9,8 @@ A graphical interface for chess engines written in C, similar to [Arena Chess GU
 Make sure that `make` is installed on your system beforehand.
 
 ```
-git clone https://github.com/michabay05/chess_gui
-cd chess_gui
-make run
+git clone https://github.com/michabay05/cegui
+cd cegui
+make
+bin/cegui
 ```

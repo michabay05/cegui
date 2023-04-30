@@ -17,7 +17,7 @@
     - [ ] When target square is clicked, move piece there
 - [ ] Evaluation bar from some engine
 - [ ] Show list of moves played
-- [ ] Export
+- [ ] Export as
   - [ ] FEN
   - [ ] PGN
 
@@ -54,18 +54,21 @@
 
 ## Parsing
 
-- [ ] FEN
-  - [ ] Parse piece placement
-  - [ ] Parse side to move
-  - [ ] Parse castling rights
-  - [ ] Parse enpassant square
-  - [ ] Parse half moves
-  - [ ] Parse full moves
+- [x] FEN
+  - [x] Parse piece placement
+  - [x] Parse side to move
+  - [x] Parse castling rights
+  - [x] Parse enpassant square
+  - [x] Parse half moves
+  - [x] Parse full moves
 - [ ] Move notations
   - [ ] SAN - Short Algebraic notation
   - [ ] Coordinate notation
 - [ ] PGN
   - [ ] Parse header section
   - [ ] Parse move section
+    - [ ] Parse SAN moves
+    - [ ] Parse SAN moves notation
+    - [ ] Parse result
 - [ ] UCI
   - [UCI commands notes](https://gist.github.com/aliostad/f4470274f39d29b788c1b09519e67372)
