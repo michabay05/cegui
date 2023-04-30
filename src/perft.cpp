@@ -4,7 +4,8 @@
 #include "move.hpp"
 #include <chrono>
 
-namespace Perft {
+namespace Perft
+{
 
 long long startTime = 0LL;
 long long endTime = 0LL;
@@ -24,7 +25,7 @@ long long timeEnd() {
 
 uint64_t totalNodes;
 
-void driver(Board& board, int depth) {
+void driver(Board &board, int depth) {
     if (depth == 0) {
         totalNodes++;
         return;
@@ -43,28 +44,10 @@ void driver(Board& board, int depth) {
 
         // Restore board state
         board = clone;
-        /* ============= FOR DEBUG PURPOSES ONLY ===============/
-        uint64_t updatedKey = board.state.posKey;
-        uint64_t updatedLock = board.state.posLock;
-        Zobrist::genKey(board);
-        Zobrist::genLock(board);
-        if (board.state.posKey != updatedKey) {
-            std::cout << "\nBoard.MakeMove(" << Move::toString(moveList.list[i]) << ")\n";
-            board.display();
-            std::cout << "Key should've been " << std::hex << board.state.posKey
-                      << "ULL instead of 0x" << updatedKey << std::dec << "ULL\n";
-        }
-        if (board.state.posLock != updatedLock) {
-            std::cout << "\nBoard.MakeMove(" << Move::toString(moveList.list[i]) << ")\n";
-            board.display();
-            std::cout << "Key should've been " << std::hex << board.state.posKey
-                      << "ULL instead of 0x" << updatedKey << std::dec << "ULL\n";
-        }
-        /*============= FOR DEBUG PURPOSES ONLY =============== */
     }
 }
 
-void test(Board& board, const int depth) {
+void test(Board &board, const int depth) {
     std::cout << "\n----------------- Performance Test (" << depth << ") -----------------\n";
     totalNodes = 0L;
     Move::MoveList moveList;

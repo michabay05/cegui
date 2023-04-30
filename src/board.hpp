@@ -37,29 +37,18 @@ struct State
     }
 };
 
-struct EvalState
-{
-    int16_t phase = 0;
-    std::array<int16_t, 2> mgScores{0 ,0};
-    std::array<int16_t, 2> egScores{0, 0};
-
-    EvalState() = default;
-	void addPieceScores(const Piece piece, const Sq target);
-};
-
 struct Board
 {
     static const std::array<std::string, 8> position;
     Position pos;
     State state;
-    EvalState evalState;
 
     Board();
     Board(const std::string& fen);
     void display() const;
     void printCastling() const;
     static void parseFen(const std::string& fenStr, Board& board);
-    bool isSquareAttacked(const int sq) const;
+    static bool isSquareAttacked(const Color clr, const int sq, const Board& b);
     bool isInCheck() const;
 };
 

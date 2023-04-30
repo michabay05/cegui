@@ -1,27 +1,25 @@
 SRC=src
 SRCS=$(wildcard $(SRC)/*.cpp)
 
-INC=vendor src/include 
+INC=vendor src 
 HDRS=$(wildcard $(INC)/*.hpp)
 
 OBJ=obj
 OBJS=$(patsubst $(SRC)/%.cpp,$(OBJ)/%.o,$(SRCS))
 
 BIN_DIR=bin
-BIN=bin/cig
+BIN=$(BIN_DIR)/cegui
 
 CC=g++
 LIBS=-lraylib -lm
-CFLAGS=-Wall -Wextra -pedantic -std=c++2a -I$(HDRS) 
+CFLAGS=-Wall -Wextra -pedantic -std=c++2a
 
-.PHONY: all clean
-
-all: $(BIN)
+.PHONY: run clean test
 
 $(BIN): $(OBJS) $(OBJ) $(BIN_DIR)
 	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBS)
 
-$(OBJ)/%.o: $(SRC)/%.cpp $(OBJ)
+obj/%.o: $(SRC)/%.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ):
@@ -34,7 +32,6 @@ clean:
 	$(RM) -r $(OBJ)
 	$(RM) -r $(BIN_DIR)
 
-run:
-	clear
-	$(MAKE) all
-	$(BIN) $(MODE)
+run: $(BIN)
+
+-include $(OBJS:.o=.d)

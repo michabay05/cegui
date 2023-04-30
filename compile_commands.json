@@ -6,15 +6,14 @@
       "-Wextra",
       "-pedantic",
       "-std=c++2a",
-      "-Isrc/include",
       "-c",
       "-o",
       "obj/attack.o",
       "src/attack.cpp"
     ],
-    "directory": "/home/michabay/Documents/ceig",
-    "file": "/home/michabay/Documents/ceig/src/attack.cpp",
-    "output": "/home/michabay/Documents/ceig/obj/attack.o"
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/attack.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/attack.o"
   },
   {
     "arguments": [
@@ -23,15 +22,14 @@
       "-Wextra",
       "-pedantic",
       "-std=c++2a",
-      "-Isrc/include",
       "-c",
       "-o",
       "obj/bitboard.o",
       "src/bitboard.cpp"
     ],
-    "directory": "/home/michabay/Documents/ceig",
-    "file": "/home/michabay/Documents/ceig/src/bitboard.cpp",
-    "output": "/home/michabay/Documents/ceig/obj/bitboard.o"
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/bitboard.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/bitboard.o"
   },
   {
     "arguments": [
@@ -40,15 +38,14 @@
       "-Wextra",
       "-pedantic",
       "-std=c++2a",
-      "-Isrc/include",
       "-c",
       "-o",
       "obj/board.o",
       "src/board.cpp"
     ],
-    "directory": "/home/michabay/Documents/ceig",
-    "file": "/home/michabay/Documents/ceig/src/board.cpp",
-    "output": "/home/michabay/Documents/ceig/obj/board.o"
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/board.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/board.o"
   },
   {
     "arguments": [
@@ -57,15 +54,14 @@
       "-Wextra",
       "-pedantic",
       "-std=c++2a",
-      "-Isrc/include",
       "-c",
       "-o",
       "obj/magics.o",
       "src/magics.cpp"
     ],
-    "directory": "/home/michabay/Documents/ceig",
-    "file": "/home/michabay/Documents/ceig/src/magics.cpp",
-    "output": "/home/michabay/Documents/ceig/obj/magics.o"
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/magics.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/magics.o"
   },
   {
     "arguments": [
@@ -74,15 +70,14 @@
       "-Wextra",
       "-pedantic",
       "-std=c++2a",
-      "-Isrc/include",
       "-c",
       "-o",
       "obj/main.o",
       "src/main.cpp"
     ],
-    "directory": "/home/michabay/Documents/ceig",
-    "file": "/home/michabay/Documents/ceig/src/main.cpp",
-    "output": "/home/michabay/Documents/ceig/obj/main.o"
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/main.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/main.o"
   },
   {
     "arguments": [
@@ -91,14 +86,29 @@
       "-Wextra",
       "-pedantic",
       "-std=c++2a",
-      "-Isrc/include",
+      "-c",
+      "-o",
+      "obj/move.o",
+      "src/move.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/move.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/move.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
       "-c",
       "-o",
       "obj/perft.o",
       "src/perft.cpp"
     ],
-    "directory": "/home/michabay/Documents/ceig",
-    "file": "/home/michabay/Documents/ceig/src/perft.cpp",
-    "output": "/home/michabay/Documents/ceig/obj/perft.o"
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/perft.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/perft.o"
   }
 ]
