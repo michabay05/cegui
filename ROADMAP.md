@@ -27,30 +27,30 @@
 
 ## Rules
 
-- [ ] Board
-  - [ ] Piece bitboards
-  - [ ] Units bitboards
-  - [ ] Handle states
-  - [ ] Set commands from FEN strings
-- [ ] Precalculate attacks
-  - [ ] Leaper pieces
-    - [ ] Pawn
-    - [ ] Knight
-    - [ ] King
-  - [ ] Sliding pieces
-    - [ ] Magic bitboards
-    - [ ] Bishop
-    - [ ] Rook
-    - [ ] Queen(combination of rook and bishop)
-- [ ] Moves
-  - [ ] Encoding moves as a 32-bit integer
-  - [ ] Decoding move information
-  - [ ] Converting moves to strings
-  - [ ] Parsing moves from string
-  - [ ] Make moves
-    - [ ] Move piece from source to target square
-    - [ ] Deal with captures, promotions, enpassant moves and castling
-    - [ ] Check if the currently made move results in a check - (If yes, unmake move)
+- [x] Board
+  - [x] Piece bitboards
+  - [x] Units bitboards
+  - [x] Handle states
+  - [x] Set commands from FEN strings
+- [x] Precalculate attacks
+  - [x] Leaper pieces
+    - [x] Pawn
+    - [x] Knight
+    - [x] King
+  - [x] Sliding pieces
+    - [x] Magic bitboards
+    - [x] Bishop
+    - [x] Rook
+    - [x] Queen(combination of rook and bishop)
+- [x] Moves
+  - [x] Encoding moves as a 32-bit integer
+  - [x] Decoding move information
+  - [x] Converting moves to strings
+  - [x] Parsing moves from string
+  - [x] Make moves
+    - [x] Move piece from source to target square
+    - [x] Deal with captures, promotions, enpassant moves and castling
+    - [x] Check if the currently made move results in a check - (If yes, unmake move)
 
 ## Parsing
 
