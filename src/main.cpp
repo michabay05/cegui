@@ -4,14 +4,36 @@
 #include "magics.hpp"
 #include "move.hpp"
 #include "perft.hpp"
+#include "pgn.hpp"
+
+#include <fstream>
+#include <iostream>
+#include <string>
+
+const std::string filename = "tests/test_random_pgn.txt";
 
 void test() {
-    const std::string fen = Board::position[7];
-    Board b(fen);
-    b.display();
-    std::cout << "FEN: " << fen << "\n";
-    for (int i = 1; i <= 4; i++)
-        Perft::test(b, i);
+    std::ifstream file(filename);
+    std::string buf;
+    std::stringstream headerSS, movesSS;
+    bool isMoveSection = false;
+
+    while (std::getline(file, buf)) {
+        if (buf.empty()) {
+            isMoveSection = true;
+            continue;
+        }
+        if (!isMoveSection)
+            headerSS << buf << "\n";
+        else
+            movesSS << buf << "\n";
+    }
+
+    std::string header = headerSS.str();
+    std::string moves = movesSS.str();
+
+    PGNInfo pgn = PGNInfo(header, moves);
+    file.close();
 }
 
 enum class Mode { GUI, Terminal, Debug };

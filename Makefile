@@ -14,12 +14,13 @@ CC=g++
 LIBS=-lraylib -lm
 CFLAGS=-Wall -Wextra -pedantic -std=c++2a
 
-.PHONY: run clean test
+.PHONY: clean
 
 $(BIN): $(OBJS) $(OBJ) $(BIN_DIR)
 	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBS)
 
-obj/%.o: $(SRC)/%.cpp
+#obj/%.o: $(SRC)/%.cpp
+$(OBJ)/%.o: $(SRC)/%.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ):
@@ -31,7 +32,3 @@ $(BIN_DIR):
 clean:
 	$(RM) -r $(OBJ)
 	$(RM) -r $(BIN_DIR)
-
-run: $(BIN)
-
--include $(OBJS:.o=.d)

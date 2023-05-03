@@ -2,35 +2,16 @@
 #include <iostream>
 #include <regex>
 #include <string>
-#include <string_view>
+
+#include "board.hpp"
+#include "pgn.hpp"
 
 // PGN File format specification
-// Source: http://www.saremba.de/chessgml/standards/pgn/pgn-complete.htm#c8.1.1
+// Source: http://www.saremba.de/chessgml/standards/pgn/pgn-complete.htm
 
-const std::string filename = "tests/test_pgn_with_comments.txt";
 const std::string HEADER_PATTERN = "\\[(\\w+) \"([\\w., -\\/?:]+)\"\\]";
-const std::string move_pattern =
-    "([NBRQK])?([a-h]|[1-8])?(x)?([a-h][1-8])(=)?([NBRQK])?([+#])?|(O-O|O-O-O)";
-
-enum class GameResult {
-    BlackWin = -1,
-    Draw,
-    WhiteWin,
-};
-
-struct PGNHeader
-{
-    // Required tags
-    std::string event;
-    std::string site;
-    std::string date;
-    int round = -1;
-    std::string players[2];
-    GameResult result;
-
-    PGNHeader(const std::string& header);
-    void parseResult(const std::string& result_str);
-};
+const std::string MOVE_PATTERN =
+    "([NBRQK])?([a-h]|[1-8])?(x)?([a-h][1-8])(=)?([NBRQ])?([+#])?|(O-O|O-O-O)";
 
 PGNHeader::PGNHeader(const std::string& headerStr) {
     std::regex rgx(HEADER_PATTERN);
@@ -60,18 +41,10 @@ PGNHeader::PGNHeader(const std::string& headerStr) {
         else if (key == "Black")
             players[1] = value;
         else if (key == "Result")
-            parseResult(match[2]);
+            parseResult(value);
 
         header = match.suffix();
     }
-
-    std::cout << " Event: " << event << "\n";
-    std::cout << "  Site: " << site << "\n";
-    std::cout << "  Date: " << date << "\n";
-    std::cout << " Round: " << round << "\n";
-    std::cout << " White: " << players[0] << "\n";
-    std::cout << " Black: " << players[1] << "\n";
-    std::cout << "Result: " << (int)result << "\n";
 }
 
 void PGNHeader::parseResult(const std::string& result_str) {
@@ -81,55 +54,96 @@ void PGNHeader::parseResult(const std::string& result_str) {
         result = GameResult::Draw;
     else if (result_str == "0-1")
         result = GameResult::BlackWin;
+    else if (result_str == "*")
+        result = GameResult::InProgress;
 }
-
-struct PGNInfo
-{
-    PGNHeader header;
-    std::vector<int> moves;
-
-    PGNInfo(const std::string& headerStr, const std::string& movesStr);
-};
 
 PGNInfo::PGNInfo(const std::string& headerStr, const std::string& movesStr)
-    : header(PGNHeader(headerStr)), moves({}) {}
-
-int main() {
-    std::ifstream file(filename);
-    std::string buf;
-    std::stringstream headerSS, movesSS;
-    bool isMoveSection = false;
-    std::regex rgx(move_pattern);
+    : header(PGNHeader(headerStr)), moves({}) {
+    std::regex rgx(MOVE_PATTERN);
     std::smatch match;
-
-    while (std::getline(file, buf)) {
-        if (buf.empty()) {
-            isMoveSection = true;
-            continue;
-        }
-        if (!isMoveSection)
-            headerSS << buf << "\n";
-        else
-            movesSS << buf << "\n";
-    }
-
-    std::string header = headerSS.str();
-    std::string moves = movesSS.str();
-
-    PGNInfo pgn = PGNInfo(header, moves);
-    file.close();
-}
-
-void move_section(std::string moves, std::smatch match, std::regex rgx) {
+    std::string moves = movesStr;
+    bool isWhiteToMove = true;
     int count = 0;
     while (std::regex_search(moves, match, rgx)) {
-        std::cout << match[0] << "\n";
-        for (size_t i = 0; i < match.size(); i++) {
-            std::cout << i << ": " << match[i].str() << "\n";
-        }
-        moves = match.suffix();
         count++;
-        std::cin.get();
+        std::cout << count << ". " << match[0]
+                  << "\n================================================\n";
+        MoveInfo move(match, isWhiteToMove);
+        move.printInfo();
+
+        moves = match.suffix();
+        isWhiteToMove = !isWhiteToMove;
     }
-    std::cout << "Match count: " << count << "\n";
+}
+
+MoveInfo::MoveInfo(const std::smatch& match, bool isWhiteToMove) {
+    parseMoves(match, isWhiteToMove);
+}
+
+void MoveInfo::parseMoves(const std::smatch& match, bool isWhiteToMove) {
+    if (!match[8].str().empty()) {
+        piece = Piece::K;
+        promoted = Piece::E;
+        disambiguate = 0;
+        type = MoveType::Castling;
+        target = Sq::g1;
+        return;
+    }
+
+    PieceTypes pieceType = PieceTypes::PAWN;
+    // Piece
+    switch (match[1].str()[0]) {
+    case 'N':
+        pieceType = PieceTypes::KNIGHT;
+        break;
+    case 'B':
+        pieceType = PieceTypes::BISHOP;
+        break;
+    case 'R':
+        pieceType = PieceTypes::ROOK;
+        break;
+    case 'Q':
+        pieceType = PieceTypes::QUEEN;
+        break;
+    case 'K':
+        pieceType = PieceTypes::KING;
+        break;
+    }
+    piece = (Piece)(isWhiteToMove ? (int)pieceType : (int)pieceType + 6);
+    disambiguate = match[2].str()[0];
+
+    for (int i = 0; i < 64; i++) {
+        if (match[4] == strCoords[i])
+            target = (Sq)i;
+    }
+
+    if (!match[3].str().empty() && !match[5].str().empty())
+        type = MoveType::CapturePromotion;
+    else if (!match[3].str().empty())
+        type = MoveType::Capture;
+    else if (!match[5].str().empty())
+        type = MoveType::Promotion;
+    else
+        type = MoveType::Quiet;
+
+    if (type == MoveType::Promotion || type == MoveType::CapturePromotion) {
+        size_t ind = pieceStr.find(match[6]);
+        if (ind != std::string::npos)
+            promoted = (Piece)ind;
+    }
+
+    if (match[7] == "#")
+        annotation = MoveAnnotation::Checkmate;
+    else if (match[7] == "+")
+        annotation = MoveAnnotation::Check;
+}
+
+void MoveInfo::printInfo() {
+    std::cout << "        Piece: " << pieceStr[(int)piece] << "\n";
+    std::cout << "     Promoted: " << pieceStr[(int)promoted] << "\n";
+    std::cout << "  Annotations: " << (int)annotation << "\n";
+    std::cout << "         Type: " << (int)type << "\n";
+    std::cout << "       Target: " << strCoords[(int)target] << "\n";
+    std::cout << " Disambiguate: " << disambiguate << "\n\n";
 }
