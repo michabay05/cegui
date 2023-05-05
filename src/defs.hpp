@@ -31,7 +31,7 @@ enum class Sq : int8_t {
 /* Pieces */
 enum class Piece : uint8_t { P, N, B, R, Q, K, p, n, b, r, q, k, E };
 enum class PieceTypes : uint8_t { PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING };
-enum class Color : uint8_t { WHITE, BLACK, BOTH };
+enum class PieceColor : uint8_t { LIGHT, DARK, BOTH };
 
 /* Direction offsets */
 enum class Direction : int8_t {

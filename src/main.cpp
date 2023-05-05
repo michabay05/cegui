@@ -1,17 +1,14 @@
-#include "attack.hpp"
-#include "bitboard.hpp"
-#include "board.hpp"
-#include "magics.hpp"
-#include "move.hpp"
-#include "perft.hpp"
-#include "pgn.hpp"
-
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
+
+#include "attack.hpp"
+#include "gui_defs.hpp"
 
 const std::string filename = "tests/test_random_pgn.txt";
 
+#include "pgn.hpp"
 void test() {
     std::ifstream file(filename);
     std::string buf;
@@ -38,7 +35,7 @@ void test() {
 
 enum class Mode { GUI, Terminal, Debug };
 
-Mode parseCmdArgs(int argc, char **argv) {
+Mode parseCmdArgs(int argc, char** argv) {
     Mode mode = Mode::Debug;
     if (argc != 2) {
         return mode;
@@ -53,23 +50,20 @@ Mode parseCmdArgs(int argc, char **argv) {
     return mode;
 }
 
-void init() {
-    Attack::init();
-}
+void init() { Attack::init(); }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     init();
     switch (parseCmdArgs(argc, argv)) {
-        case Mode::GUI:
-            std::cout << "*************** TODO: GUI mode hasn't yet been implemented\n";
-            return 1;
+    case Mode::GUI:
+        return gui_main();
         break;
-        case Mode::Terminal:
-            std::cout << "*************** TODO: Terminal mode hasn't yet been implemented\n";
-            return 1;
+    case Mode::Terminal:
+        std::cout << "*************** TODO: Terminal mode hasn't yet been implemented\n";
+        return 1;
         break;
-        case Mode::Debug:
-            test();
+    case Mode::Debug:
+        test();
         break;
     }
 }

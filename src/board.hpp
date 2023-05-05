@@ -20,8 +20,8 @@ struct Position
 
 struct State
 {
-    Color side = Color::WHITE;
-    Color xside = Color::BLACK;
+    PieceColor side = PieceColor::LIGHT;
+    PieceColor xside = PieceColor::DARK;
     Sq enpassant = Sq::noSq;
     int castling = 0;
     int fullMoves = 0;
@@ -33,7 +33,7 @@ struct State
     inline void changeSide()
     {
         side = xside;
-        xside = (Color)((int)side ^ 1);
+        xside = (PieceColor)((int)side ^ 1);
     }
 };
 
@@ -48,7 +48,7 @@ struct Board
     void display() const;
     void printCastling() const;
     static void parseFen(const std::string& fenStr, Board& board);
-    static bool isSquareAttacked(const Color clr, const int sq, const Board& b);
+    static bool isSquareAttacked(const PieceColor clr, const int sq, const Board& b);
     bool isInCheck() const;
 };
 

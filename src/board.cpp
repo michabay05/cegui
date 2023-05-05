@@ -39,10 +39,10 @@ Position::Position() {
 void Position::updateUnits() {
     units.fill(0);
     for (int piece = (int)PieceTypes::PAWN; piece <= (int)PieceTypes::KING; piece++) {
-        units[(int)Color::WHITE] |= pieces[piece];
-        units[(int)Color::BLACK] |= pieces[piece + 6];
+        units[(int)PieceColor::LIGHT] |= pieces[piece];
+        units[(int)PieceColor::DARK] |= pieces[piece + 6];
     }
-    units[(int)Color::BOTH] = units[(int)Color::WHITE] | units[(int)Color::BLACK];
+    units[(int)PieceColor::BOTH] = units[(int)PieceColor::LIGHT] | units[(int)PieceColor::DARK];
 }
 
 Board::Board() { parseFen(position[1], *this); }
@@ -58,7 +58,7 @@ void Board::display() const {
         std::cout << "\n    +---+---+---+---+---+---+---+---+\n";
     }
     std::cout << "      a   b   c   d   e   f   g   h\n\n";
-    std::cout << "      Side to move: " << (state.side == Color::WHITE ? "white" : "black") << "\n";
+    std::cout << "      Side to move: " << (state.side == PieceColor::LIGHT ? "white" : "black") << "\n";
     printCastling();
     std::cout << "         Enpassant: "
               << (state.enpassant != Sq::noSq ? strCoords[(int)state.enpassant] : "noSq") << "\n";
@@ -89,34 +89,34 @@ int Position::getPieceOnSquare(const int sq) const {
     return (int)E;
 }
 
-bool Board::isSquareAttacked(const Color side, const int sq, const Board& b) {
+bool Board::isSquareAttacked(const PieceColor side, const int sq, const Board& b) {
     // Attacked by white pawns
-    if ((side == Color::WHITE) &&
-        (Attack::pawnAttacks[(int)Color::BLACK][sq] & b.pos.pieces[(int)Piece::P]))
+    if ((side == PieceColor::LIGHT) &&
+        (Attack::pawnAttacks[(int)PieceColor::DARK][sq] & b.pos.pieces[(int)Piece::P]))
         return true;
     // Attacked by black pawns
-    if ((side == Color::BLACK) &&
-        (Attack::pawnAttacks[(int)Color::WHITE][sq] & b.pos.pieces[(int)Piece::p]))
+    if ((side == PieceColor::DARK) &&
+        (Attack::pawnAttacks[(int)PieceColor::LIGHT][sq] & b.pos.pieces[(int)Piece::p]))
         return true;
     // Attacked by knights
     if (Attack::knightAttacks[sq] &
-        b.pos.pieces[side == Color::WHITE ? (int)Piece::N : (int)Piece::n])
+        b.pos.pieces[side == PieceColor::LIGHT ? (int)Piece::N : (int)Piece::n])
         return true;
     // Attacked by bishops
-    if (Magics::getBishopAttack(sq, b.pos.units[(int)Color::BOTH]) &
-        b.pos.pieces[side == Color::WHITE ? (int)Piece::B : (int)Piece::b])
+    if (Magics::getBishopAttack(sq, b.pos.units[(int)PieceColor::BOTH]) &
+        b.pos.pieces[side == PieceColor::LIGHT ? (int)Piece::B : (int)Piece::b])
         return true;
     // Attacked by rooks
-    if (Magics::getRookAttack(sq, b.pos.units[(int)Color::BOTH]) &
-        b.pos.pieces[side == Color::WHITE ? (int)Piece::R : (int)Piece::r])
+    if (Magics::getRookAttack(sq, b.pos.units[(int)PieceColor::BOTH]) &
+        b.pos.pieces[side == PieceColor::LIGHT ? (int)Piece::R : (int)Piece::r])
         return true;
     // Attacked by queens
-    if (Magics::getQueenAttack(sq, b.pos.units[(int)Color::BOTH]) &
-        b.pos.pieces[side == Color::WHITE ? (int)Piece::Q : (int)Piece::q])
+    if (Magics::getQueenAttack(sq, b.pos.units[(int)PieceColor::BOTH]) &
+        b.pos.pieces[side == PieceColor::LIGHT ? (int)Piece::Q : (int)Piece::q])
         return true;
     // Attacked by kings
     if (Attack::kingAttacks[sq] &
-        b.pos.pieces[side == Color::WHITE ? (int)Piece::K : (int)Piece::k])
+        b.pos.pieces[side == PieceColor::LIGHT ? (int)Piece::K : (int)Piece::k])
         return true;
 
     // If all of the above cases fail, return false
@@ -124,7 +124,7 @@ bool Board::isSquareAttacked(const Color side, const int sq, const Board& b) {
 }
 
 bool Board::isInCheck() const {
-    uint8_t piece = state.side == Color::WHITE ? (int)Piece::k : (int)Piece::K;
+    uint8_t piece = state.side == PieceColor::LIGHT ? (int)Piece::k : (int)Piece::K;
     return isSquareAttacked(state.side, Bitboard::lsbIndex(pos.pieces[piece]), *this);
 }
 
@@ -155,11 +155,11 @@ void Board::parseFen(const std::string &fen, Board &board) {
     currIndex++;
     // Parse side to move
     if (fen[currIndex] == 'w') {
-        board.state.side = Color::WHITE;
-        board.state.xside = Color::BLACK;
+        board.state.side = PieceColor::LIGHT;
+        board.state.xside = PieceColor::DARK;
     } else if (fen[currIndex] == 'b') {
-        board.state.side = Color::BLACK;
-        board.state.xside = Color::WHITE;
+        board.state.side = PieceColor::DARK;
+        board.state.xside = PieceColor::LIGHT;
     }
     currIndex += 2;
 

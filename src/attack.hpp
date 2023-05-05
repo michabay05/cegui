@@ -17,7 +17,7 @@ extern const std::array<int, 64> rookRelevantBits;              // [square]
 void init();
 void initLeapers();
 void initSliding(const PieceTypes piece);
-void genPawnAttacks(const Color side, const int sq);
+void genPawnAttacks(const PieceColor side, const int sq);
 void genKnightAttacks(const int sq);
 void genKingAttacks(const int sq);
 uint64_t genBishopOccupancy(const int sq);

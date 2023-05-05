@@ -54,8 +54,8 @@ void init() {
 */
 void initLeapers() {
     for (int sq = 0; sq < 64; sq++) {
-        genPawnAttacks(Color::WHITE, sq);
-        genPawnAttacks(Color::BLACK, sq);
+        genPawnAttacks(PieceColor::LIGHT, sq);
+        genPawnAttacks(PieceColor::DARK, sq);
         genKnightAttacks(sq);
         genKingAttacks(sq);
     }
@@ -91,21 +91,21 @@ void initSliding(const PieceTypes piece) {
     }
 }
 
-void genPawnAttacks(const Color side, const int sq) {
+void genPawnAttacks(const PieceColor side, const int sq) {
     /* Since the board is set up where a8 is 0 and h1 is 63,
        the white pieces attack towards 0 while the black pieces
        attack towards 63.
     */
-    if (side == Color::WHITE) {
+    if (side == PieceColor::LIGHT) {
         if (ROW(sq) > 0 && COL(sq) > 0)
-            setBit(pawnAttacks[(int)Color::WHITE][sq], sq + (int)Direction::SW);
+            setBit(pawnAttacks[(int)PieceColor::LIGHT][sq], sq + (int)Direction::SW);
         if (ROW(sq) > 0 && COL(sq) < 7)
-            setBit(pawnAttacks[(int)Color::WHITE][sq], sq + (int)Direction::SE);
+            setBit(pawnAttacks[(int)PieceColor::LIGHT][sq], sq + (int)Direction::SE);
     } else {
         if (ROW(sq) < 7 && COL(sq) > 0)
-            setBit(pawnAttacks[(int)Color::BLACK][sq], sq + (int)Direction::NW);
+            setBit(pawnAttacks[(int)PieceColor::DARK][sq], sq + (int)Direction::NW);
         if (ROW(sq) < 7 && COL(sq) < 7)
-            setBit(pawnAttacks[(int)Color::BLACK][sq], sq + (int)Direction::NE);
+            setBit(pawnAttacks[(int)PieceColor::DARK][sq], sq + (int)Direction::NE);
     }
 }
 

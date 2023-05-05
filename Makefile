@@ -1,7 +1,7 @@
 SRC=src
 SRCS=$(wildcard $(SRC)/*.cpp)
 
-INC=vendor src 
+INC=vendor 
 HDRS=$(wildcard $(INC)/*.hpp)
 
 OBJ=obj
@@ -16,11 +16,10 @@ CFLAGS=-Wall -Wextra -pedantic -std=c++2a
 
 .PHONY: clean
 
-$(BIN): $(OBJS) $(OBJ) $(BIN_DIR)
-	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBS)
+$(BIN): $(OBJ) $(OBJS) $(BIN_DIR)
+	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBS) -I $(INC)
 
-#obj/%.o: $(SRC)/%.cpp
-$(OBJ)/%.o: $(SRC)/%.cpp
+obj/%.o: $(SRC)/%.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ):

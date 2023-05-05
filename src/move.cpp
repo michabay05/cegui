@@ -108,7 +108,7 @@ void generatePawns(MoveList &moveList, const Board &board) {
     int promotionStart, direction, doublePushStart, piece;
     int source, target;
     // If side to move is white
-    if (board.state.side == Color::WHITE) {
+    if (board.state.side == PieceColor::LIGHT) {
         piece = (int)Piece::P;
         promotionStart = (int)Sq::a7;
         direction = (int)Direction::SOUTH;
@@ -127,31 +127,31 @@ void generatePawns(MoveList &moveList, const Board &board) {
     while (bitboardCopy) {
         source = Bitboard::lsbIndex(bitboardCopy);
         target = source + direction;
-        if ((board.state.side == Color::WHITE ? target >= (int)Sq::a8 : target <= (int)Sq::h1) &&
-            !getBit(board.pos.units[(int)Color::BOTH], target)) {
+        if ((board.state.side == PieceColor::LIGHT ? target >= (int)Sq::a8 : target <= (int)Sq::h1) &&
+            !getBit(board.pos.units[(int)PieceColor::BOTH], target)) {
             // Quiet moves
             // Promotion
             if ((source >= promotionStart) && (source <= promotionStart + 7)) {
                 moveList.add(
                     encode(source, target, piece,
-                           (board.state.side == Color::WHITE ? (int)Piece::Q : (int)Piece::q), 0, 0,
+                           (board.state.side == PieceColor::LIGHT ? (int)Piece::Q : (int)Piece::q), 0, 0,
                            0, 0));
                 moveList.add(
                     encode(source, target, piece,
-                           (board.state.side == Color::WHITE ? (int)Piece::R : (int)Piece::r), 0, 0,
+                           (board.state.side == PieceColor::LIGHT ? (int)Piece::R : (int)Piece::r), 0, 0,
                            0, 0));
                 moveList.add(
                     encode(source, target, piece,
-                           (board.state.side == Color::WHITE ? (int)Piece::B : (int)Piece::b), 0, 0,
+                           (board.state.side == PieceColor::LIGHT ? (int)Piece::B : (int)Piece::b), 0, 0,
                            0, 0));
                 moveList.add(
                     encode(source, target, piece,
-                           (board.state.side == Color::WHITE ? (int)Piece::N : (int)Piece::n), 0, 0,
+                           (board.state.side == PieceColor::LIGHT ? (int)Piece::N : (int)Piece::n), 0, 0,
                            0, 0));
             } else {
                 moveList.add(encode(source, target, piece, (int)Piece::E, 0, 0, 0, 0));
                 if ((source >= doublePushStart && source <= doublePushStart + 7) &&
-                    !getBit(board.pos.units[(int)Color::BOTH], target + direction))
+                    !getBit(board.pos.units[(int)PieceColor::BOTH], target + direction))
                     moveList.add(
                         encode(source, target + direction, piece, (int)Piece::E, 0, 1, 0, 0));
             }
@@ -165,19 +165,19 @@ void generatePawns(MoveList &moveList, const Board &board) {
             if ((source >= promotionStart) && (source <= promotionStart + 7)) {
                 moveList.add(
                     encode(source, target, piece,
-                           (board.state.side == Color::WHITE ? (int)Piece::Q : (int)Piece::q), 1, 0,
+                           (board.state.side == PieceColor::LIGHT ? (int)Piece::Q : (int)Piece::q), 1, 0,
                            0, 0));
                 moveList.add(
                     encode(source, target, piece,
-                           (board.state.side == Color::WHITE ? (int)Piece::R : (int)Piece::r), 1, 0,
+                           (board.state.side == PieceColor::LIGHT ? (int)Piece::R : (int)Piece::r), 1, 0,
                            0, 0));
                 moveList.add(
                     encode(source, target, piece,
-                           (board.state.side == Color::WHITE ? (int)Piece::B : (int)Piece::b), 1, 0,
+                           (board.state.side == PieceColor::LIGHT ? (int)Piece::B : (int)Piece::b), 1, 0,
                            0, 0));
                 moveList.add(
                     encode(source, target, piece,
-                           (board.state.side == Color::WHITE ? (int)Piece::N : (int)Piece::n), 1, 0,
+                           (board.state.side == PieceColor::LIGHT ? (int)Piece::N : (int)Piece::n), 1, 0,
                            0, 0));
             } else
                 moveList.add(encode(source, target, piece, (int)Piece::E, 1, 0, 0, 0));
@@ -199,18 +199,18 @@ void generatePawns(MoveList &moveList, const Board &board) {
 }
 
 void generateKnights(MoveList &moveList, const Board &board) {
-    int source, target, piece = board.state.side == Color::WHITE ? (int)Piece::N : (int)Piece::n;
+    int source, target, piece = board.state.side == PieceColor::LIGHT ? (int)Piece::N : (int)Piece::n;
     uint64_t bitboardCopy = board.pos.pieces[piece], attackCopy;
     while (bitboardCopy) {
         source = Bitboard::lsbIndex(bitboardCopy);
 
         attackCopy = Attack::knightAttacks[source] &
-                     (board.state.side == Color::WHITE ? ~board.pos.units[(int)Color::WHITE]
-                                                       : ~board.pos.units[(int)Color::BLACK]);
+                     (board.state.side == PieceColor::LIGHT ? ~board.pos.units[(int)PieceColor::LIGHT]
+                                                       : ~board.pos.units[(int)PieceColor::DARK]);
         while (attackCopy) {
             target = Bitboard::lsbIndex(attackCopy);
-            if (getBit(board.pos.units[board.state.side == Color::WHITE ? (int)Color::BLACK
-                                                                        : (int)Color::WHITE],
+            if (getBit(board.pos.units[board.state.side == PieceColor::LIGHT ? (int)PieceColor::DARK
+                                                                        : (int)PieceColor::LIGHT],
                        target))
                 moveList.add(encode(source, target, piece, (int)Piece::E, 1, 0, 0, 0));
             else
@@ -222,18 +222,18 @@ void generateKnights(MoveList &moveList, const Board &board) {
 }
 
 void generateBishops(MoveList &moveList, const Board &board) {
-    int source, target, piece = board.state.side == Color::WHITE ? (int)Piece::B : (int)Piece::b;
+    int source, target, piece = board.state.side == PieceColor::LIGHT ? (int)Piece::B : (int)Piece::b;
     uint64_t bitboardCopy = board.pos.pieces[piece], attackCopy;
     while (bitboardCopy) {
         source = Bitboard::lsbIndex(bitboardCopy);
 
-        attackCopy = Magics::getBishopAttack(source, board.pos.units[(int)Color::BOTH]) &
-                     (board.state.side == Color::WHITE ? ~board.pos.units[(int)Color::WHITE]
-                                                       : ~board.pos.units[(int)Color::BLACK]);
+        attackCopy = Magics::getBishopAttack(source, board.pos.units[(int)PieceColor::BOTH]) &
+                     (board.state.side == PieceColor::LIGHT ? ~board.pos.units[(int)PieceColor::LIGHT]
+                                                       : ~board.pos.units[(int)PieceColor::DARK]);
         while (attackCopy) {
             target = Bitboard::lsbIndex(attackCopy);
-            if (getBit(board.pos.units[board.state.side == Color::WHITE ? (int)Color::BLACK
-                                                                        : (int)Color::WHITE],
+            if (getBit(board.pos.units[board.state.side == PieceColor::LIGHT ? (int)PieceColor::DARK
+                                                                        : (int)PieceColor::LIGHT],
                        target))
                 moveList.add(encode(source, target, piece, (int)Piece::E, 1, 0, 0, 0));
             else
@@ -245,18 +245,18 @@ void generateBishops(MoveList &moveList, const Board &board) {
 }
 
 void generateRooks(MoveList &moveList, const Board &board) {
-    int source, target, piece = board.state.side == Color::WHITE ? (int)Piece::R : (int)Piece::r;
+    int source, target, piece = board.state.side == PieceColor::LIGHT ? (int)Piece::R : (int)Piece::r;
     uint64_t bitboardCopy = board.pos.pieces[piece], attackCopy;
     while (bitboardCopy) {
         source = Bitboard::lsbIndex(bitboardCopy);
 
-        attackCopy = Magics::getRookAttack(source, board.pos.units[(int)Color::BOTH]) &
-                     (board.state.side == Color::WHITE ? ~board.pos.units[(int)Color::WHITE]
-                                                       : ~board.pos.units[(int)Color::BLACK]);
+        attackCopy = Magics::getRookAttack(source, board.pos.units[(int)PieceColor::BOTH]) &
+                     (board.state.side == PieceColor::LIGHT ? ~board.pos.units[(int)PieceColor::LIGHT]
+                                                       : ~board.pos.units[(int)PieceColor::DARK]);
         while (attackCopy) {
             target = Bitboard::lsbIndex(attackCopy);
-            if (getBit(board.pos.units[board.state.side == Color::WHITE ? (int)Color::BLACK
-                                                                        : (int)Color::WHITE],
+            if (getBit(board.pos.units[board.state.side == PieceColor::LIGHT ? (int)PieceColor::DARK
+                                                                        : (int)PieceColor::LIGHT],
                        target))
                 moveList.add(encode(source, target, piece, (int)Piece::E, 1, 0, 0, 0));
             else
@@ -268,18 +268,18 @@ void generateRooks(MoveList &moveList, const Board &board) {
 }
 
 void generateQueens(MoveList &moveList, const Board &board) {
-    int source, target, piece = board.state.side == Color::WHITE ? (int)Piece::Q : (int)Piece::q;
+    int source, target, piece = board.state.side == PieceColor::LIGHT ? (int)Piece::Q : (int)Piece::q;
     uint64_t bitboardCopy = board.pos.pieces[piece], attackCopy;
     while (bitboardCopy) {
         source = Bitboard::lsbIndex(bitboardCopy);
 
-        attackCopy = Magics::getQueenAttack(source, board.pos.units[(int)Color::BOTH]) &
-                     (board.state.side == Color::WHITE ? ~board.pos.units[(int)Color::WHITE]
-                                                       : ~board.pos.units[(int)Color::BLACK]);
+        attackCopy = Magics::getQueenAttack(source, board.pos.units[(int)PieceColor::BOTH]) &
+                     (board.state.side == PieceColor::LIGHT ? ~board.pos.units[(int)PieceColor::LIGHT]
+                                                       : ~board.pos.units[(int)PieceColor::DARK]);
         while (attackCopy) {
             target = Bitboard::lsbIndex(attackCopy);
-            if (getBit(board.pos.units[board.state.side == Color::WHITE ? (int)Color::BLACK
-                                                                        : (int)Color::WHITE],
+            if (getBit(board.pos.units[board.state.side == PieceColor::LIGHT ? (int)PieceColor::DARK
+                                                                        : (int)PieceColor::LIGHT],
                        target))
                 moveList.add(encode(source, target, piece, (int)Piece::E, 1, 0, 0, 0));
             else
@@ -294,19 +294,19 @@ void generateKings(MoveList &moveList, const Board &board) {
     /* NOTE: Checks aren't handled by the move generator,
                                       it's handled by the make move function.
     */
-    int source, target, piece = board.state.side == Color::WHITE ? (int)Piece::K : (int)Piece::k;
+    int source, target, piece = board.state.side == PieceColor::LIGHT ? (int)Piece::K : (int)Piece::k;
     uint64_t bitboard = board.pos.pieces[piece], attack;
     while (bitboard) {
         source = Bitboard::lsbIndex(bitboard);
 
         attack = Attack::kingAttacks[source] &
-                 (board.state.side == Color::WHITE ? ~board.pos.units[(int)Color::WHITE]
-                                                   : ~board.pos.units[(int)Color::BLACK]);
+                 (board.state.side == PieceColor::LIGHT ? ~board.pos.units[(int)PieceColor::LIGHT]
+                                                   : ~board.pos.units[(int)PieceColor::DARK]);
         while (attack) {
             target = Bitboard::lsbIndex(attack);
 
-            if (getBit((board.pos.units[board.state.side == Color::WHITE ? (int)Color::BLACK
-                                                                         : (int)Color::WHITE]),
+            if (getBit((board.pos.units[board.state.side == PieceColor::LIGHT ? (int)PieceColor::DARK
+                                                                         : (int)PieceColor::LIGHT]),
                        target))
                 moveList.add(encode(source, target, piece, (int)Piece::E, 1, 0, 0, 0));
             else
@@ -319,7 +319,7 @@ void generateKings(MoveList &moveList, const Board &board) {
         popBit(bitboard, source);
     }
     // Generate castling moves
-    if (board.state.side == Color::WHITE)
+    if (board.state.side == PieceColor::LIGHT)
         genWhiteCastling(moveList, board);
     else
         genBlackCastling(moveList, board);
@@ -329,10 +329,10 @@ void genWhiteCastling(MoveList &moveList, const Board &board) {
     // Kingside castling
     if (getBit(board.state.castling, (int)CastlingRights::wk)) {
         // Check if path is obstructed
-        if (!getBit(board.pos.units[(int)Color::BOTH], (int)Sq::f1) &&
-            !getBit(board.pos.units[(int)Color::BOTH], (int)Sq::g1)) {
+        if (!getBit(board.pos.units[(int)PieceColor::BOTH], (int)Sq::f1) &&
+            !getBit(board.pos.units[(int)PieceColor::BOTH], (int)Sq::g1)) {
             // Is e1 or f1 attacked by a black piece?
-            if (!Board::isSquareAttacked(Color::BLACK, (int)Sq::e1, board) && !Board::isSquareAttacked(Color::BLACK, (int)Sq::f1, board))
+            if (!Board::isSquareAttacked(PieceColor::DARK, (int)Sq::e1, board) && !Board::isSquareAttacked(PieceColor::DARK, (int)Sq::f1, board))
                 moveList.add(
                     encode((int)Sq::e1, (int)Sq::g1, (int)Piece::K, (int)Piece::E, 0, 0, 0, 1));
         }
@@ -340,11 +340,11 @@ void genWhiteCastling(MoveList &moveList, const Board &board) {
     // Queenside castling
     if (getBit(board.state.castling, (int)CastlingRights::wq)) {
         // Check if path is obstructed
-        if (!getBit(board.pos.units[(int)Color::BOTH], (int)Sq::b1) &&
-            !getBit(board.pos.units[(int)Color::BOTH], (int)Sq::c1) &&
-            !getBit(board.pos.units[(int)Color::BOTH], (int)Sq::d1)) {
+        if (!getBit(board.pos.units[(int)PieceColor::BOTH], (int)Sq::b1) &&
+            !getBit(board.pos.units[(int)PieceColor::BOTH], (int)Sq::c1) &&
+            !getBit(board.pos.units[(int)PieceColor::BOTH], (int)Sq::d1)) {
             // Is d1 or e1 attacked by a black piece?
-            if (!Board::isSquareAttacked(Color::BLACK, (int)Sq::d1, board) && !Board::isSquareAttacked(Color::BLACK, (int)Sq::e1, board))
+            if (!Board::isSquareAttacked(PieceColor::DARK, (int)Sq::d1, board) && !Board::isSquareAttacked(PieceColor::DARK, (int)Sq::e1, board))
                 moveList.add(
                     encode((int)Sq::e1, (int)Sq::c1, (int)Piece::K, (int)Piece::E, 0, 0, 0, 1));
         }
@@ -355,10 +355,10 @@ void genBlackCastling(MoveList &moveList, const Board &board) {
     // Kingside castling
     if (getBit(board.state.castling, (int)CastlingRights::bk)) {
         // Check if path is obstructed
-        if (!getBit(board.pos.units[(int)Color::BOTH], (int)Sq::f8) &&
-            !getBit(board.pos.units[(int)Color::BOTH], (int)Sq::g8)) {
+        if (!getBit(board.pos.units[(int)PieceColor::BOTH], (int)Sq::f8) &&
+            !getBit(board.pos.units[(int)PieceColor::BOTH], (int)Sq::g8)) {
             // Is e8 or f8 attacked by a white piece?
-            if (!Board::isSquareAttacked(Color::WHITE, (int)Sq::e8, board) && !Board::isSquareAttacked(Color::WHITE, (int)Sq::f8, board))
+            if (!Board::isSquareAttacked(PieceColor::LIGHT, (int)Sq::e8, board) && !Board::isSquareAttacked(PieceColor::LIGHT, (int)Sq::f8, board))
                 moveList.add(
                     encode((int)Sq::e8, (int)Sq::g8, (int)Piece::k, (int)Piece::E, 0, 0, 0, 1));
         }
@@ -366,11 +366,11 @@ void genBlackCastling(MoveList &moveList, const Board &board) {
     // Queenside castling
     if (getBit(board.state.castling, (int)CastlingRights::bq)) {
         // Check if path is obstructed
-        if (!getBit(board.pos.units[(int)Color::BOTH], (int)Sq::b8) &&
-            !getBit(board.pos.units[(int)Color::BOTH], (int)Sq::c8) &&
-            !getBit(board.pos.units[(int)Color::BOTH], (int)Sq::d8)) {
+        if (!getBit(board.pos.units[(int)PieceColor::BOTH], (int)Sq::b8) &&
+            !getBit(board.pos.units[(int)PieceColor::BOTH], (int)Sq::c8) &&
+            !getBit(board.pos.units[(int)PieceColor::BOTH], (int)Sq::d8)) {
             // Is d8 or e8 attacked by a white piece?
-            if (!Board::isSquareAttacked(Color::WHITE, (int)Sq::d8, board) && !Board::isSquareAttacked(Color::WHITE, (int)Sq::e8, board))
+            if (!Board::isSquareAttacked(PieceColor::LIGHT, (int)Sq::d8, board) && !Board::isSquareAttacked(PieceColor::LIGHT, (int)Sq::e8, board))
                 moveList.add(
                     encode((int)Sq::e8, (int)Sq::c8, (int)Piece::k, (int)Piece::E, 0, 0, 0, 1));
         }
@@ -398,8 +398,8 @@ bool make(Board *main, const int move, MoveType moveFlag) {
 
         // If capture, remove piece of opponent bitboard
         if (capture) {
-            for (int bbPiece = (main->state.side == Color::WHITE ? (int)Piece::p : (int)Piece::P);
-                 bbPiece <= (main->state.side == Color::WHITE ? (int)Piece::k : (int)Piece::K);
+            for (int bbPiece = (main->state.side == PieceColor::LIGHT ? (int)Piece::p : (int)Piece::P);
+                 bbPiece <= (main->state.side == PieceColor::LIGHT ? (int)Piece::k : (int)Piece::K);
                  bbPiece++) {
                 if (getBit(main->pos.pieces[bbPiece], target)) {
                     popBit(main->pos.pieces[bbPiece], target);
@@ -418,7 +418,7 @@ bool make(Board *main, const int move, MoveType moveFlag) {
         // Enpassant capture
         if (enpassant) {
             // If white to move
-            if (main->state.side == Color::WHITE) {
+            if (main->state.side == PieceColor::LIGHT) {
                 popBit(main->pos.pieces[(int)Piece::p], target + (int)Direction::NORTH);
             } else {
                 popBit(main->pos.pieces[(int)Piece::P], target + (int)Direction::SOUTH);
@@ -431,7 +431,7 @@ bool make(Board *main, const int move, MoveType moveFlag) {
 
         // Two Square Push move
         if (twoSquarePush) {
-            if (main->state.side == Color::WHITE)
+            if (main->state.side == PieceColor::LIGHT)
                 main->state.enpassant = (Sq)(target + (int)Direction::NORTH);
             else
                 main->state.enpassant = (Sq)(target + (int)Direction::SOUTH);

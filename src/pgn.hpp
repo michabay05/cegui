@@ -3,6 +3,8 @@
 #include <vector>
 #include <regex>
 
+#include "defs.hpp"
+
 enum class GameResult {
     BlackWin = -1,
     Draw,
