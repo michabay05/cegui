@@ -6,31 +6,11 @@
 #include "attack.hpp"
 #include "gui_defs.hpp"
 
-const std::string filename = "tests/test_random_pgn.txt";
-
-#include "pgn.hpp"
+#include "uci.hpp"
+#include "fen.hpp"
+#include "board.hpp"
 void test() {
-    std::ifstream file(filename);
-    std::string buf;
-    std::stringstream headerSS, movesSS;
-    bool isMoveSection = false;
-
-    while (std::getline(file, buf)) {
-        if (buf.empty()) {
-            isMoveSection = true;
-            continue;
-        }
-        if (!isMoveSection)
-            headerSS << buf << "\n";
-        else
-            movesSS << buf << "\n";
-    }
-
-    std::string header = headerSS.str();
-    std::string moves = movesSS.str();
-
-    PGNInfo pgn = PGNInfo(header, moves);
-    file.close();
+    uciTest();
 }
 
 enum class Mode { GUI, Terminal, Debug };

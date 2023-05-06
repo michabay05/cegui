@@ -1,0 +1,13 @@
+# GUI TO ENGINE
+uci
+ucinewgame
+position startpos
+position fen rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b - - 1 2
+quit
+isready
+stop
+
+# ENGINE TO GUI
+id name Shredder
+id author Stefan MK
+bestmove g1f3 ponder d8f6

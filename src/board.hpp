@@ -1,6 +1,7 @@
 #pragma once
 
 #include "defs.hpp"
+#include "fen.hpp"
 #include <array>
 #include <string>
 
@@ -26,12 +27,9 @@ struct State
     int castling = 0;
     int fullMoves = 0;
     int halfMoves = 0;
-    uint64_t posKey = 0ULL;
-    uint64_t posLock = 0ULL;
 
     State() = default;
-    inline void changeSide()
-    {
+    inline void changeSide() {
         side = xside;
         xside = (PieceColor)((int)side ^ 1);
     }
@@ -47,9 +45,11 @@ struct Board
     Board(const std::string& fen);
     void display() const;
     void printCastling() const;
-    static void parseFen(const std::string& fenStr, Board& board);
     static bool isSquareAttacked(const PieceColor clr, const int sq, const Board& b);
     bool isInCheck() const;
+
+  private:
+    void parseFen(FENInfo fenInfo);
 };
 
 enum class CastlingRights : uint8_t { wk, wq, bk, bq };

@@ -1,4 +1,5 @@
 #include "board.hpp"
+#include "fen.hpp"
 
 #include <iostream>
 
@@ -45,9 +46,15 @@ void Position::updateUnits() {
     units[(int)PieceColor::BOTH] = units[(int)PieceColor::LIGHT] | units[(int)PieceColor::DARK];
 }
 
-Board::Board() { parseFen(position[1], *this); }
+Board::Board() {
+    FENInfo f(position[1]);
+    parseFen(f);
+}
 
-Board::Board(const std::string &fen) { parseFen(fen, *this); }
+Board::Board(const std::string &fen) {
+    FENInfo f(fen);
+    parseFen(f);
+}
 
 void Board::display() const {
     std::cout << "\n    +---+---+---+---+---+---+---+---+\n";
@@ -128,101 +135,16 @@ bool Board::isInCheck() const {
     return isSquareAttacked(state.side, Bitboard::lsbIndex(pos.pieces[piece]), *this);
 }
 
-void Board::parseFen(const std::string &fen, Board &board) {
-    int currIndex = 0;
-
-    // Parse the piece portion of the fen and place them on the board
-    for (int rank = 0; rank < 8; rank++) {
-        for (int file = 0; file < 8; file++) {
-            if (fen[currIndex] == ' ')
-                break;
-            if (fen[currIndex] == '/')
-                currIndex++;
-            if (fen[currIndex] >= '0' && fen[currIndex] <= '8') {
-                file += (fen[currIndex] - '0');
-                currIndex++;
-            }
-            if ((fen[currIndex] >= 'A' && fen[currIndex] <= 'Z') ||
-                (fen[currIndex] >= 'a' && fen[currIndex] <= 'z')) {
-                size_t piece;
-                if ((piece = pieceStr.find(fen[currIndex])) != (int)Piece::E) {
-                    setBit(board.pos.pieces[piece], SQ(rank, file));
-                }
-                currIndex++;
-            }
-        }
+void Board::parseFen(FENInfo fen) {
+    for (int i = 0; i < 64; i++) {
+        if (fen.board[i] == Piece::E) continue;
+        setBit(pos.pieces[(int)fen.board[i]], i);
     }
-    currIndex++;
-    // Parse side to move
-    if (fen[currIndex] == 'w') {
-        board.state.side = PieceColor::LIGHT;
-        board.state.xside = PieceColor::DARK;
-    } else if (fen[currIndex] == 'b') {
-        board.state.side = PieceColor::DARK;
-        board.state.xside = PieceColor::LIGHT;
-    }
-    currIndex += 2;
-
-    // Check if king is in check in the initial position
-    // If the king is in check, the king has to have a chance to escape it.
-
-    /* if (board.isInCheck()) {
-        std::cout << "Failed to initialized board!\n";
-        std::cout << "     [Problem] - Initial position can't have a king being in "
-                     "check and it's "
-                     "not the checked side to move.\n";
-        std::cout << "  [Solution 1] - Modify the position to remove the checked "
-                     "king from check.\n";
-        std::cout << "  [Solution 2] - Change side to move to the side of the "
-                     "checked king.\n\n";
-        std::exit(1);
-    } */
-
-    // Parse castling rights
-    while (fen[currIndex] != ' ') {
-        switch (fen[currIndex]) {
-        case 'K':
-            setBit(board.state.castling, (int)CastlingRights::wk);
-            break;
-        case 'Q':
-            setBit(board.state.castling, (int)CastlingRights::wq);
-            break;
-        case 'k':
-            setBit(board.state.castling, (int)CastlingRights::bk);
-            break;
-        case 'q':
-            setBit(board.state.castling, (int)CastlingRights::bq);
-            break;
-        }
-        currIndex++;
-    }
-    currIndex++;
-
-    // Parse enpassant square
-    if (fen[currIndex] != '-') {
-        int f = fen[currIndex] - 'a';
-        currIndex++;
-        int r = 8 - (fen[currIndex] - '0');
-        board.state.enpassant = (Sq)SQ(r, f);
-        currIndex++;
-    } else {
-        board.state.enpassant = Sq::noSq;
-        currIndex++;
-    }
-    currIndex++;
-
-    size_t count;
-    // Parse the number of half moves
-    std::string spaceInd = fen.substr(currIndex);
-    count = spaceInd.find(" ");
-    board.state.halfMoves = atoi(fen.substr(currIndex, count - 1).c_str());
-    currIndex += (int)count;
-
-    // Parse the number of full moves
-    spaceInd = fen.substr(currIndex);
-    count = spaceInd.find(" ");
-    board.state.fullMoves = atoi(fen.substr(currIndex, count - 1).c_str());
-
-    // Update occupancy bitboards
-    board.pos.updateUnits();
+    pos.updateUnits();
+    state.side = fen.side;
+    state.xside = (PieceColor)(1 - (int)fen.side);
+    state.enpassant = fen.enpassant;
+    state.castling = fen.castling;
+    state.halfMoves = fen.halfMoves;
+    state.fullMoves = fen.fullMoves;
 }
