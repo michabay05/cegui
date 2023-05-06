@@ -135,6 +135,10 @@ bool Board::isInCheck() const {
     return isSquareAttacked(state.side, Bitboard::lsbIndex(pos.pieces[piece]), *this);
 }
 
+bool Board::isOppInCheck() const {
+    uint8_t piece = state.side == PieceColor::LIGHT ? (int)Piece::K : (int)Piece::k;
+    return isSquareAttacked(state.xside, Bitboard::lsbIndex(pos.pieces[piece]), *this);
+}
 void Board::parseFen(FENInfo fen) {
     for (int i = 0; i < 64; i++) {
         if (fen.board[i] == Piece::E) continue;

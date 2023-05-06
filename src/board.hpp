@@ -47,6 +47,7 @@ struct Board
     void printCastling() const;
     static bool isSquareAttacked(const PieceColor clr, const int sq, const Board& b);
     bool isInCheck() const;
+    bool isOppInCheck() const;
 
   private:
     void parseFen(FENInfo fenInfo);

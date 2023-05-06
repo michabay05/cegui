@@ -12,6 +12,7 @@ const Color DARK_COLOR = {238, 238, 210, 255};
 
 const Color SELECTED_COLOR = {187, 203, 43, 255};
 const Color PREVIEW_COLOR = {54, 129, 227, 200};
+const Color IN_CHECK_COLOR = {179, 32, 42, 210};
 
 const float PADDING[2] = {
     0.15f * (SCREEN_WIDTH - (8 * SQ_SIZE)),
@@ -21,6 +22,15 @@ const float PADDING[2] = {
 const int SQ_SIZE = 70;
 
 void drawBoard(const GUIBoard& gb) {
+    Sq kingSq = Sq::noSq;
+    // if (gb.board.isInCheck()) {
+    if (gb.board.isOppInCheck()) {
+        bool isWhiteToMove = gb.board.state.side == PieceColor::LIGHT;
+        for (int i = 0; i < 64; i++) {
+            if (getBit(gb.board.pos.pieces[isWhiteToMove ? 5 : 11], i))
+                kingSq = (Sq)i;
+        }
+    }
     for (int r = 0; r < 8; r++) {
         for (int f = 0; f < 8; f++) {
             Color sqColor = !SQCLR(r, f) ? LIGHT_COLOR : DARK_COLOR;
@@ -28,6 +38,8 @@ void drawBoard(const GUIBoard& gb) {
                 sqColor = ColorAlphaBlend(sqColor, SELECTED_COLOR, WHITE);
             else if (getBit(gb.preview, SQ(r, f)))
                 sqColor = ColorAlphaBlend(sqColor, PREVIEW_COLOR, WHITE);
+            else if (kingSq == (Sq)SQ(r, f))
+                sqColor = ColorAlphaBlend(sqColor, IN_CHECK_COLOR, WHITE);
             DrawRectangleV({f * SQ_SIZE + PADDING[0], r * SQ_SIZE + PADDING[1]}, {SQ_SIZE, SQ_SIZE},
                            sqColor);
         }
@@ -97,7 +109,8 @@ void drawEvalBar(const GUIBoard& gb, const Font& font) {
     DrawRectangleRounded(r, 0.15, 5, DARKGREEN);
     std::string str = "20.7";
     Vector2 t = MeasureTextEx(font, str.c_str(), EVAL_FONT_SIZE, 0);
-    DrawTextEx(font, str.c_str(), {r.x + (r.width / 2.0f) - (t.x / 2), 550}, EVAL_FONT_SIZE, 1, WHITE);
+    DrawTextEx(font, str.c_str(), {r.x + (r.width / 2.0f) - (t.x / 2), 550}, EVAL_FONT_SIZE, 1,
+               WHITE);
 }
 
 void render(const GUIBoard& gb, const Texture& tex, const Font& font) {
@@ -117,7 +130,6 @@ void render(const GUIBoard& gb, const Texture& tex, const Font& font) {
 
     drawEvalBar(gb, font);
 }
-
 
 int gui_main() {
     SetConfigFlags(FLAG_MSAA_4X_HINT);
