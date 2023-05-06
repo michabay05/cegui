@@ -4,10 +4,15 @@
 #include "board.hpp"
 #include "move.hpp"
 
+extern const int PROMOTED_RECT_WIDTH;
+extern const int PROMOTED_RECT_HEIGHT;
+extern const int X_OFFSET;
+
 struct GUIBoard {
     Board board;
-    Rectangle rect;
+    Rectangle boardRect, promotedRect;
     Sq selected, target;
+    Piece promoted;
     uint64_t preview;
     Move::MoveList generatedMoves;
     bool isInCheck;
@@ -19,4 +24,5 @@ struct GUIBoard {
     void setMovePreviews();
     void isCheck();
     bool makeMove(); 
+    void setPromotedPiece();
 };
