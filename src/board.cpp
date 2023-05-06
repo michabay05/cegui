@@ -165,7 +165,8 @@ void Board::parseFen(const std::string &fen, Board &board) {
 
     // Check if king is in check in the initial position
     // If the king is in check, the king has to have a chance to escape it.
-    if (board.isInCheck()) {
+
+    /* if (board.isInCheck()) {
         std::cout << "Failed to initialized board!\n";
         std::cout << "     [Problem] - Initial position can't have a king being in "
                      "check and it's "
@@ -175,7 +176,7 @@ void Board::parseFen(const std::string &fen, Board &board) {
         std::cout << "  [Solution 2] - Change side to move to the side of the "
                      "checked king.\n\n";
         std::exit(1);
-    }
+    } */
 
     // Parse castling rights
     while (fen[currIndex] != ' ') {

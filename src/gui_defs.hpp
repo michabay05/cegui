@@ -3,8 +3,7 @@
 #include "defs.hpp"
 #include "raylib.h"
 
-#define SQ_SIZE 70
-
-extern const float padding[2];
+extern const float PADDING[2];
+extern const int SQ_SIZE;
 
 int gui_main();
