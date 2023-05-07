@@ -1,7 +1,7 @@
 #include "board.hpp"
+#include "defs.hpp"
 #include "gui_board.hpp"
 #include "gui_defs.hpp"
-#include <raylib.h>
 
 const int SCREEN_WIDTH = 1000;
 const int SCREEN_HEIGHT = 600;
@@ -23,7 +23,6 @@ const int SQ_SIZE = 70;
 
 void drawBoard(const GUIBoard& gb) {
     Sq kingSq = Sq::noSq;
-    // if (gb.board.isInCheck()) {
     if (gb.board.isOppInCheck()) {
         bool isWhiteToMove = gb.board.state.side == PieceColor::LIGHT;
         for (int i = 0; i < 64; i++) {
@@ -79,6 +78,7 @@ void update(GUIBoard& gb) {
     gb.setMovePreviews();
     gb.setTarget();
     gb.makeMove();
+    gb.updateGameState();
 }
 
 void drawPromotedChoices(const GUIBoard& gb, const Texture& tex) {
@@ -90,7 +90,6 @@ void drawPromotedChoices(const GUIBoard& gb, const Texture& tex) {
             gb.promotedRect.x + ((i - 1) * dimension) + X_OFFSET,
             gb.promotedRect.y + (PROMOTED_RECT_HEIGHT / 2.0f) - (dimension / 2.0f), dimension,
             dimension,
-            // PROMOTED_RECT_HEIGHT,
         };
         drawPiece(tex, rect, (Piece)(gb.board.state.side == PieceColor::LIGHT ? i : i + 6));
     }
@@ -99,7 +98,7 @@ void drawPromotedChoices(const GUIBoard& gb, const Texture& tex) {
 const int EVAL_FONT_SIZE = 15;
 
 void drawEvalBar(const GUIBoard& gb, const Font& font) {
-    Vector2 evalBarDim = {40.0f, gb.boardRect.height};
+    Vector2 evalBarDim = {45.0f, gb.boardRect.height};
     Rectangle r = {
         (gb.boardRect.x / 2.0f) - (evalBarDim.x / 2.0f),
         (SCREEN_HEIGHT - evalBarDim.y) / 2.0f,
@@ -107,7 +106,22 @@ void drawEvalBar(const GUIBoard& gb, const Font& font) {
         evalBarDim.y,
     };
     DrawRectangleRounded(r, 0.15, 5, DARKGREEN);
-    std::string str = "20.7";
+
+    std::string str;
+    switch (gb.gameState) {
+    case GameState::Normal:
+        // GET EVALUATION FROM UCI
+        break;
+    case GameState::Checkmate:
+        if (gb.board.state.xside == PieceColor::LIGHT)
+            str = "1-0";
+        else 
+            str = "0-1";
+        break;
+    case GameState::Stalemate:
+        str = "1/2";
+        break;
+    }
     Vector2 t = MeasureTextEx(font, str.c_str(), EVAL_FONT_SIZE, 0);
     DrawTextEx(font, str.c_str(), {r.x + (r.width / 2.0f) - (t.x / 2), 550}, EVAL_FONT_SIZE, 1,
                WHITE);
@@ -125,7 +139,7 @@ void render(const GUIBoard& gb, const Texture& tex, const Font& font) {
     }
     drawSideToMove(gb);
     if ((ROW(gb.target) == 0 || ROW(gb.target) == 7) &&
-        gb.board.pos.getPieceOnSquare((int)gb.target))
+        COLORLESS(gb.board.pos.getPieceOnSquare((int)gb.target)) == (int)PieceTypes::PAWN)
         drawPromotedChoices(gb, tex);
 
     drawEvalBar(gb, font);
@@ -135,7 +149,7 @@ int gui_main() {
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "CEGUI");
 
-    Board b("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1");
+    Board b("6k1/5p2/3Q2p1/8/P2K4/7p/8/8 w - - 0 1");
     Rectangle r = {
         PADDING[0],
         PADDING[1],

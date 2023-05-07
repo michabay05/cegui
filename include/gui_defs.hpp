@@ -1,7 +1,7 @@
 #pragma once
 
 #include "defs.hpp"
-#include "raylib.h"
+#include "vendor/raylib.h"
 
 extern const float PADDING[2];
 extern const int SQ_SIZE;

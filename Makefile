@@ -1,33 +1,51 @@
-SRC=src
-SRCS=$(wildcard $(SRC)/*.cpp)
+SRCDIR = src
+INCDIR = include
+VENDORDIR = include/vendor
+OBJDIR_DEBUG = obj/debug
+OBJDIR_RELEASE = obj/release
+BINDIR_DEBUG = bin/debug
+BINDIR_RELEASE = bin/release
 
-INC=vendor 
-HDRS=$(wildcard $(INC)/*.hpp)
+CXX = g++
+COMMON_CXXFLAGS = -Wall -Wextra -pedantic -std=c++2a -I$(INCDIR) -I$(VENDORDIR)
+CXXFLAGS_DEBUG = -g
+CXXFLAGS_RELEASE = -O3
+LDFLAGS = -lraylib -lm
 
-OBJ=obj
-OBJS=$(patsubst $(SRC)/%.cpp,$(OBJ)/%.o,$(SRCS))
+SOURCES = $(wildcard $(SRCDIR)/*.cpp)
+OBJECTS_DEBUG = $(patsubst $(SRCDIR)/%.cpp, $(OBJDIR_DEBUG)/%.o, $(SOURCES))
+OBJECTS_RELEASE = $(patsubst $(SRCDIR)/%.cpp, $(OBJDIR_RELEASE)/%.o, $(SOURCES))
+BIN_NAME = cegui
+BINARY_DEBUG = $(BINDIR_DEBUG)/$(BIN_NAME)
+BINARY_RELEASE = $(BINDIR_RELEASE)/$(BIN_NAME)
 
-BIN_DIR=bin
-BIN=$(BIN_DIR)/cegui
+.PHONY: all clean debug debug_setup release release_setup
 
-CC=g++
-LIBS=-lraylib -lm
-CFLAGS=-Wall -Wextra -pedantic -std=c++2a
+all: debug release
 
-.PHONY: clean
+debug: debug_setup $(BINARY_DEBUG)
 
-$(BIN): $(OBJ) $(OBJS) $(BIN_DIR)
-	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBS) -I $(INC)
+debug_setup:
+	mkdir -p $(OBJDIR_DEBUG)
+	mkdir -p $(BINDIR_DEBUG)
 
-obj/%.o: $(SRC)/%.cpp
-	$(CC) $(CFLAGS) -c $< -o $@
+$(BINARY_DEBUG): $(OBJECTS_DEBUG)
+	$(CXX) $^ -o $@ $(LDFLAGS)
 
-$(OBJ):
-	mkdir -p $@
+$(OBJDIR_DEBUG)/%.o: $(SRCDIR)/%.cpp
+	$(CXX) $(COMMON_CXXFLAGS) $(CXXFLAGS_DEBUG) -c $< -o $@
 
-$(BIN_DIR):
-	mkdir -p $@
+release: release_setup $(BINARY_RELEASE)
+
+release_setup:
+	mkdir -p $(OBJDIR_RELEASE)
+	mkdir -p $(BINDIR_RELEASE)
+
+$(BINARY_RELEASE): $(OBJECTS_RELEASE)
+	$(CXX) $(LDFLAGS) $^ -o $@
+
+$(OBJDIR_RELEASE)/%.o: $(SRCDIR)/%.cpp
+	$(CXX) $(COMMON_CXXFLAGS) $(CXXFLAGS_RELEASE) -c $< -o $@
 
 clean:
-	$(RM) -r $(OBJ)
-	$(RM) -r $(BIN_DIR)
+	rm -rf $(OBJDIR_DEBUG)/* $(OBJDIR_RELEASE)/* $(BINDIR_DEBUG)/* $(BINDIR_RELEASE)/*

@@ -8,6 +8,12 @@ extern const int PROMOTED_RECT_WIDTH;
 extern const int PROMOTED_RECT_HEIGHT;
 extern const int X_OFFSET;
 
+enum class GameState {
+    Normal,
+    Checkmate,
+    Stalemate,
+};
+
 struct GUIBoard {
     Board board;
     Rectangle boardRect, promotedRect;
@@ -15,14 +21,18 @@ struct GUIBoard {
     Piece promoted;
     uint64_t preview;
     Move::MoveList generatedMoves;
-    bool isInCheck;
+    GameState gameState;
 
     GUIBoard(Board& b, Rectangle r);
     void setSelection();
     void setTarget();
-    void genMoves();
     void setMovePreviews();
-    void isCheck();
     bool makeMove(); 
     void setPromotedPiece();
+    void updateGameState();
+private:
+    void genMoves();
+    bool areNoLegalMoves();
+    bool isMoveLegal(int move);
+    bool areAllMovesIllegal(Move::MoveList ml);
 };

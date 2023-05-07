@@ -1,7 +1,6 @@
 #include "gui_board.hpp"
 #include "defs.hpp"
 #include "move.hpp"
-#include <raylib.h>
 
 const int PROMOTED_RECT_WIDTH = 300;
 const int PROMOTED_RECT_HEIGHT = 100;
@@ -20,7 +19,7 @@ GUIBoard::GUIBoard(Board& b, Rectangle r) {
     target = Sq::noSq;
     promoted = Piece::E;
     preview = 0ULL;
-    isInCheck = false;
+    gameState = GameState::Normal;
 }
 
 static bool isInBound(Rectangle bounds, Vector2 pos) {
@@ -68,8 +67,20 @@ void GUIBoard::setTarget() {
     Sq tempTarget = (Sq)SQ(row, col);
     if (getBit(preview, (int)tempTarget))
         target = tempTarget;
-    if (ROW(target) == 0 || ROW(target) == 7)
+    if (COLORLESS(board.pos.getPieceOnSquare((int)selected)) == (int)PieceTypes::PAWN && (ROW(target) == 0 || ROW(target) == 7))
         setPromotedPiece();
+}
+
+void GUIBoard::setPromotedPiece() {
+    if (!IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        return;
+    Vector2 mousePos = GetMousePosition();
+    if (!isInBound(promotedRect, mousePos))
+        return;
+
+    promoted = (Piece)(((mousePos.x - PADDING[0]) / (PROMOTED_RECT_WIDTH / 4.0f)) - 1);
+    if (board.state.side == PieceColor::DARK)
+        promoted = (Piece)((int)promoted + 6);
 }
 
 void GUIBoard::genMoves() {
@@ -101,18 +112,21 @@ void GUIBoard::genMoves() {
     }
 }
 
+bool GUIBoard::isMoveLegal(int move) {
+    Board clone = board;
+    return Move::make(&clone, move, Move::MoveType::allMoves);
+}
+
 void GUIBoard::setMovePreviews() {
     genMoves();
 
     // Reset the preview bitboard
     preview = 0ULL;
-    Board clone = board;
     for (int i = 0; i < generatedMoves.count; i++) {
-        if (!Move::make(&board, generatedMoves.list[i], Move::MoveType::allMoves))
+        if (!isMoveLegal(generatedMoves.list[i]))
             continue;
         if (Move::getSource(generatedMoves.list[i]) == (int)selected)
             setBit(preview, Move::getTarget(generatedMoves.list[i]));
-        board = clone;
     }
 }
 
@@ -128,16 +142,27 @@ bool GUIBoard::makeMove() {
     return Move::make(&board, move, Move::MoveType::allMoves);
 }
 
-void GUIBoard::setPromotedPiece() {
-    if (!(board.state.side == PieceColor::LIGHT && ROW((int)target) == 0) &&
-        !(board.state.side == PieceColor::DARK && ROW((int)target) == 7))
-        return;
+bool GUIBoard::areAllMovesIllegal(Move::MoveList ml) {
+    for (int i = 0; i < ml.count; i++) {
+        if (isMoveLegal(ml.list[i]))
+            return false;
+    }
+    return true;
+}
 
-    if (!IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-        return;
-    Vector2 mousePos = GetMousePosition();
-    if (!isInBound(promotedRect, mousePos))
-        return;
+bool GUIBoard::areNoLegalMoves() {
+    Move::MoveList ml;
+    Move::generate(ml, board);
+    return areAllMovesIllegal(ml);
+}
 
-    promoted = (Piece)(((mousePos.x - PADDING[0]) / (PROMOTED_RECT_WIDTH / 4.0f)) - 1);
+void GUIBoard::updateGameState() {
+    if (areNoLegalMoves()) {
+        if (board.isOppInCheck())
+            gameState = GameState::Checkmate;
+        else
+            gameState = GameState::Stalemate;
+        return;
+    }
+    gameState = GameState::Normal;
 }
