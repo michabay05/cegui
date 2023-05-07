@@ -42,7 +42,7 @@ release_setup:
 	mkdir -p $(BINDIR_RELEASE)
 
 $(BINARY_RELEASE): $(OBJECTS_RELEASE)
-	$(CXX) $(LDFLAGS) $^ -o $@
+	$(CXX) $^ -o $@ $(LDFLAGS)
 
 $(OBJDIR_RELEASE)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(COMMON_CXXFLAGS) $(CXXFLAGS_RELEASE) -c $< -o $@
