@@ -62,7 +62,7 @@ void buildObj(const char* filename, CompilationMode cm) {
         PATH(objDir, CONCAT(NOEXT(filename), ".o")));
 }
 
-void shouldRebuld(const char* file, const char* objDir, CompilationMode cm) {
+void shouldRebuild(const char* file, const char* objDir, CompilationMode cm) {
     if (ENDS_WITH(file, ".cpp")) {
         long diff = 0;
         bool success =
@@ -80,7 +80,7 @@ void buildAllObj(CompilationMode cm) {
     const char* objDir = getCorrectDir(cm, true);
     int count = 0;
     FOREACH_FILE_IN_DIR(file, "src", {
-        shouldRebuld(file, objDir, cm);
+        shouldRebuild(file, objDir, cm);
         count++;
     });
 }
