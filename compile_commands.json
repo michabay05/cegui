@@ -1,0 +1,458 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-g",
+      "-c",
+      "-o",
+      "obj/debug/attack.o",
+      "src/attack.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/attack.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/debug/attack.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-g",
+      "-c",
+      "-o",
+      "obj/debug/bitboard.o",
+      "src/bitboard.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/bitboard.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/debug/bitboard.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-g",
+      "-c",
+      "-o",
+      "obj/debug/board.o",
+      "src/board.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/board.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/debug/board.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-g",
+      "-c",
+      "-o",
+      "obj/debug/fen.o",
+      "src/fen.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/fen.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/debug/fen.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-g",
+      "-c",
+      "-o",
+      "obj/debug/gui_board.o",
+      "src/gui_board.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/gui_board.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/debug/gui_board.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-g",
+      "-c",
+      "-o",
+      "obj/debug/gui_main.o",
+      "src/gui_main.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/gui_main.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/debug/gui_main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-g",
+      "-c",
+      "-o",
+      "obj/debug/magics.o",
+      "src/magics.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/magics.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/debug/magics.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-g",
+      "-c",
+      "-o",
+      "obj/debug/main.o",
+      "src/main.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/main.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/debug/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-g",
+      "-c",
+      "-o",
+      "obj/debug/move.o",
+      "src/move.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/move.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/debug/move.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-g",
+      "-c",
+      "-o",
+      "obj/debug/perft.o",
+      "src/perft.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/perft.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/debug/perft.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-g",
+      "-c",
+      "-o",
+      "obj/debug/pgn.o",
+      "src/pgn.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/pgn.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/debug/pgn.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-g",
+      "-c",
+      "-o",
+      "obj/debug/uci.o",
+      "src/uci.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/uci.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/debug/uci.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-O3",
+      "-c",
+      "-o",
+      "obj/release/attack.o",
+      "src/attack.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/attack.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/release/attack.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-O3",
+      "-c",
+      "-o",
+      "obj/release/bitboard.o",
+      "src/bitboard.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/bitboard.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/release/bitboard.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-O3",
+      "-c",
+      "-o",
+      "obj/release/board.o",
+      "src/board.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/board.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/release/board.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-O3",
+      "-c",
+      "-o",
+      "obj/release/fen.o",
+      "src/fen.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/fen.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/release/fen.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-O3",
+      "-c",
+      "-o",
+      "obj/release/gui_board.o",
+      "src/gui_board.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/gui_board.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/release/gui_board.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-O3",
+      "-c",
+      "-o",
+      "obj/release/gui_main.o",
+      "src/gui_main.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/gui_main.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/release/gui_main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-O3",
+      "-c",
+      "-o",
+      "obj/release/magics.o",
+      "src/magics.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/magics.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/release/magics.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-O3",
+      "-c",
+      "-o",
+      "obj/release/main.o",
+      "src/main.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/main.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/release/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-O3",
+      "-c",
+      "-o",
+      "obj/release/move.o",
+      "src/move.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/move.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/release/move.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-O3",
+      "-c",
+      "-o",
+      "obj/release/perft.o",
+      "src/perft.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/perft.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/release/perft.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-O3",
+      "-c",
+      "-o",
+      "obj/release/pgn.o",
+      "src/pgn.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/pgn.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/release/pgn.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-std=c++2a",
+      "-Iinclude",
+      "-Iinclude/vendor",
+      "-O3",
+      "-c",
+      "-o",
+      "obj/release/uci.o",
+      "src/uci.cpp"
+    ],
+    "directory": "/home/michabay/Documents/cegui",
+    "file": "/home/michabay/Documents/cegui/src/uci.cpp",
+    "output": "/home/michabay/Documents/cegui/obj/release/uci.o"
+  }
+]

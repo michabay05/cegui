@@ -15,9 +15,9 @@
 #define LDFLAGS "-lraylib", "-lm"
 
 #define OBJ_DEBUG_DIR PATH("obj", "debug")
-#define OBJ_RELEASE_DIR "obj/release"
-#define BIN_DEBUG_DIR "bin/debug"
-#define BIN_RELEASE_DIR "bin/release"
+#define OBJ_RELEASE_DIR PATH("obj", "release")
+#define BIN_DEBUG_DIR PATH("bin", "debug")
+#define BIN_RELEASE_DIR PATH("bin", "release")
 #define BIN_NAME "cegui"
 
 typedef enum { Debug, Release, Both } CompilationMode;

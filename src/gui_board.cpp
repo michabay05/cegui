@@ -6,7 +6,9 @@ const int PROMOTED_RECT_WIDTH = 300;
 const int PROMOTED_RECT_HEIGHT = 100;
 const int X_OFFSET = 5;
 
-GUIBoard::GUIBoard(Board& b, Rectangle r) {
+GUIBoard::GUIBoard(Board& b, Rectangle r)
+    : selected(Sq::noSq), target(Sq::noSq), promoted(Piece::E), preview(0ULL),
+      gameState(GameState::Normal), capturedPieces{} {
     board = b;
     boardRect = r;
     promotedRect = {
@@ -15,14 +17,9 @@ GUIBoard::GUIBoard(Board& b, Rectangle r) {
         PROMOTED_RECT_WIDTH + 3 * X_OFFSET,
         PROMOTED_RECT_HEIGHT,
     };
-    selected = Sq::noSq;
-    target = Sq::noSq;
-    promoted = Piece::E;
-    preview = 0ULL;
-    gameState = GameState::Normal;
 }
 
-static bool isInBound(Rectangle bounds, Vector2 pos) {
+bool isInBound(Rectangle bounds, Vector2 pos) {
     return (pos.x >= bounds.x && pos.x <= bounds.x + bounds.width) &&
            (pos.y >= bounds.y && pos.y <= bounds.y + bounds.height);
 }
@@ -67,7 +64,8 @@ void GUIBoard::setTarget() {
     Sq tempTarget = (Sq)SQ(row, col);
     if (getBit(preview, (int)tempTarget))
         target = tempTarget;
-    if (COLORLESS(board.pos.getPieceOnSquare((int)selected)) == (int)PieceTypes::PAWN && (ROW(target) == 0 || ROW(target) == 7))
+    if (COLORLESS(board.pos.getPieceOnSquare((int)selected)) == (int)PieceTypes::PAWN &&
+        (ROW(target) == 0 || ROW(target) == 7))
         setPromotedPiece();
 }
 
@@ -130,30 +128,30 @@ void GUIBoard::setMovePreviews() {
     }
 }
 
+#include <iostream>
 bool GUIBoard::makeMove() {
     if (target == Sq::noSq)
         return false;
     int move = generatedMoves.search((int)selected, (int)target, (int)promoted);
     if (move == 0)
         return false;
+    if (Move::isCapture(move))
+        capturedPieces.push_back((Piece)board.pos.getPieceOnSquare((int)target));
+    moveList.push_back(move);
     selected = Sq::noSq;
     target = Sq::noSq;
     promoted = Piece::E;
     return Move::make(&board, move, Move::MoveType::allMoves);
 }
 
-bool GUIBoard::areAllMovesIllegal(Move::MoveList ml) {
+bool GUIBoard::areNoLegalMoves() {
+    Move::MoveList ml;
+    Move::generate(ml, board);
     for (int i = 0; i < ml.count; i++) {
         if (isMoveLegal(ml.list[i]))
             return false;
     }
     return true;
-}
-
-bool GUIBoard::areNoLegalMoves() {
-    Move::MoveList ml;
-    Move::generate(ml, board);
-    return areAllMovesIllegal(ml);
 }
 
 void GUIBoard::updateGameState() {

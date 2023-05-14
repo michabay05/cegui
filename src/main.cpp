@@ -6,6 +6,7 @@
 #include "attack.hpp"
 #include "gui_defs.hpp"
 
+
 #include "uci.hpp"
 #include "fen.hpp"
 #include "board.hpp"

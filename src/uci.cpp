@@ -1,6 +1,8 @@
 #include <fstream>
 #include <iostream>
 #include <regex>
+#include <sstream>
+#include <string>
 
 const std::string filename = "tests/test_uci.txt";
 const std::string pattern = "(\\w+)";
@@ -26,7 +28,33 @@ void parseCommand(const std::string& cmdStr) {
     }
 }
 
+std::string readCmdOutput(const std::string& cmd) {
+    FILE* pipe = popen(cmd.c_str(), "r");
+    if (!pipe) {
+        std::cerr << "Failed to run command: '" << cmd << "'\n";
+        return "";
+    }
+
+    std::stringstream ss;
+    char buf[256];
+    while (!feof(pipe)) {
+        if (fgets(buf, 256, pipe) != NULL) {
+            ss << buf;
+        }
+    }
+
+    pclose(pipe);
+    return ss.str();
+}
+
+
 void uciTest() {
+    std::string output = readCmdOutput("../Stockfish/src/stockfish");
+    std::cout << "position startpos\r";
+    std::cout << output << "\n";
+}
+
+void a() {
     std::ifstream file(filename);
     std::string buf;
 
