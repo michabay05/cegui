@@ -118,8 +118,6 @@ void drawPromotedChoices(const GUIBoard& gb, const Texture& tex) {
 
 const int EVAL_FONT_SIZE = 15;
 
-float findFactor(const float currEval) { return std::pow(currEval, 1.0f / 3.0f); }
-
 void drawEvalBar(const GUIBoard& gb, const Font& font) {
     float currEval = 0.0f;
     Vector2 evalBarDim = {35.0f, gb.boardRect.height};
@@ -157,7 +155,7 @@ void drawEvalBar(const GUIBoard& gb, const Font& font) {
     DrawTextEx(font, str.c_str(), textPos, EVAL_FONT_SIZE, 0, BLACK_EVAL_COLOR);
 }
 
-const float MOVE_TEXT_FONT_SIZE = 25;
+const float MOVE_TEXT_FONT_SIZE = 20;
 bool isSliderHeld = false;
 
 void isSlidingBarHeld(Rectangle sliderRect) {
@@ -177,13 +175,12 @@ Rectangle scrollSliderRect = {scrollBarRect.x, scrollBarRect.y, scrollBarRect.wi
                               0.15f * scrollBarRect.height};
 
 void drawMoveList(const GUIBoard& gb, const Font& font) {
-    (void)gb;
     DrawRectangleRec(moveListRect, DARKGRAY);
     size_t i = 0;
-    const Vector2 offset = {35, 25};
+    const Vector2 offset = {35, 0.8f * MOVE_TEXT_FONT_SIZE};
     Vector2 pos = {0, moveListRect.y + offset.y};
     Vector2 textDim{};
-    while (i < gb.moveList.size() && pos.y < moveListRect.y + moveListRect.height) {
+    while (i < gb.moveList.size() && pos.y + textDim.y < moveListRect.y + moveListRect.height) {
         std::string moveText = Move::toString(gb.moveList[i]);
         if (i % 2 == 0) {
             pos.x = moveListRect.x + 35;

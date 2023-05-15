@@ -12,7 +12,11 @@
     "-Wall", "-Wextra", "-pedantic", "-std=c++2a", "-Iinclude", "-Iinclude/vendor"
 #define CXXFLAGS_DEBUG "-g"
 #define CXXFLAGS_RELEASE "-O3"
-#define LDFLAGS "-lraylib", "-lm"
+#ifdef _WIN32
+    #define LDFLAGS "-Llib", "-lraylib", "-lopengl32", "-lgdi32", "-lwinmm"
+#else
+    #define LDFLAGS "-lraylib", "-lm"
+#endif
 
 #define OBJ_DEBUG_DIR PATH("obj", "debug")
 #define OBJ_RELEASE_DIR PATH("obj", "release")

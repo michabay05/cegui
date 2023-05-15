@@ -2,6 +2,9 @@
 
 #include <array>
 #include <iostream>
+/* The line below is needed for some reason on windows because
+ * types like 'uint64_t' and 'uint16_t' don't compile without this line */
+#include <cstdint>
 
 // clang-format off
 enum class Sq : int8_t {
